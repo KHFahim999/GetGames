@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Games - Ultimate Gaming Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- Neon Theme Base Styles --- */
+        * {margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+        :root {
+            --neon-blue:#00f3ff;--neon-pink:#ff00ff;--neon-green:#39ff14;
+            --neon-purple:#9d00ff;--dark-bg:#0a0a16;--darker-bg:#050510;--card-bg:#121228
+        }
+        body{background-color:var(--dark-bg);color:white;overflow-x:hidden;line-height:1.6}
+        a{text-decoration:none;color:inherit}
+
+        /* Header - Mobile First */
+        header{
+            background:linear-gradient(to bottom,rgba(10,10,22,.9),rgba(5,5,16,.7));
+            backdrop-filter:blur(10px);
+            padding:15px 5%;
+            display:flex;
+            flex-direction: column;
+            align-items:center;
+            position:sticky;
+            top:0;
+            z-index:100;
+            border-bottom:1px solid rgba(0,243,255,.2);
+            gap: 15px;
+        }
+        .logo{font-size:1.8rem;font-weight:800;background:linear-gradient(45deg,var(--neon-blue),var(--neon-pink));
+            -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 10px rgba(0,243,255,.5)}
+        .logo span{color:var(--neon-green)}
+        
+        nav {width: 100%;}
+        nav ul{display:flex;list-style:none; justify-content: space-between; flex-wrap: wrap; gap: 10px;}
+        nav ul li{margin:0 5px}
+        nav ul li a{color:white;font-weight:600;position:relative; font-size: 0.9rem;}
+        nav ul li a:hover{color:var(--neon-blue);text-shadow:0 0 10px var(--neon-blue)}
+        
+        .search-bar{display:flex;align-items:center;background:rgba(255,255,255,.1);border-radius:25px;padding:8px 15px;width:100%;max-width:300px;}
+        .search-bar input{background:transparent;border:none;outline:none;color:white;width:100%;padding:5px}
+        .search-bar i{color:var(--neon-blue)}
+
+        /* Hero */
+        .hero{
+            height:50vh;
+            background:linear-gradient(rgba(5,5,16,.7),rgba(10,10,22,.9)),
+            url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1600&q=80');
+            background-size:cover;
+            background-position:center;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:0 5%
+        }
+        .hero h1{font-size:2rem;margin-bottom:15px;text-shadow:0 0 20px var(--neon-blue);
+            background:linear-gradient(45deg,var(--neon-blue),var(--neon-pink),var(--neon-green));
+            -webkit-background-clip:text;background-clip:text;color:transparent}
+        .hero p{max-width:700px;margin-bottom:25px; font-size: 0.95rem;}
+        .btn{background:linear-gradient(45deg,var(--neon-blue),var(--neon-pink));padding:12px 28px;
+            border:none;border-radius:25px;color:white;font-weight:700;cursor:pointer;transition:.3s; font-size: 1rem;}
+        .btn:hover{box-shadow:0 0 20px rgba(0,243,255,.6);transform:translateY(-3px)}
+
+        /* Categories */
+        .categories{display:flex;overflow-x:auto;gap:10px;margin:30px 5%;padding-bottom: 10px; scrollbar-width: none;}
+        .categories::-webkit-scrollbar {display: none;}
+        .category{background:var(--card-bg);padding:10px 15px;border-radius:20px;color:#cfefff;cursor:pointer;font-weight:600; white-space: nowrap; flex-shrink: 0;}
+        .category.active{background:rgba(0,243,255,.2);box-shadow:0 0 15px rgba(0,243,255,.3)}
+
+        /* Sections */
+        .section-title{text-align:center;font-size:1.7rem;margin:30px 0 20px;color:var(--neon-blue)}
+        .games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;padding:0 5%}
+        .game-card{background:var(--card-bg);border-radius:12px;overflow:hidden;transition:.3s}
+        .game-card:hover{transform:translateY(-5px);box-shadow:0 0 20px rgba(255,0,255,.3)}
+        .game-image{height:120px;background-size:cover;background-position:center}
+        .game-info{padding:10px}
+        .game-title{font-weight:700;margin-bottom:6px;color:var(--neon-blue); font-size: 0.95rem;}
+        .game-description{font-size:.8rem;color:#aaa;margin-bottom:8px;min-height:34px; line-height: 1.4;}
+        .play-btn{display:inline-block;padding:6px 12px;border-radius:6px;background:linear-gradient(45deg,var(--neon-blue),var(--neon-pink));color:white;font-weight:600;font-size:.85rem}
+
+        /* Footer */
+        footer{background:var(--darker-bg);padding:30px 5% 20px;border-top:1px solid rgba(0,243,255,.2)}
+        .footer-content{display:grid;grid-template-columns:1fr;gap:25px;margin-bottom:20px}
+        .footer-section h3{margin-bottom:10px;color:var(--neon-blue); font-size: 1.2rem;}
+        .footer-section ul{list-style:none}
+        .footer-section ul li{margin-bottom:6px}
+        .footer-section ul li a{color:#aaa; font-size: 0.9rem;}
+        .footer-section ul li a:hover{color:var(--neon-green)}
+        .copyright{text-align:center;color:#888;font-size:.85rem;border-top:1px solid rgba(255,255,255,.1);padding-top:15px}
+
+        /* Modal */
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);
+            z-index:1000;justify-content:center;align-items:center; padding: 20px;}
+        .modal-content{background:var(--card-bg);padding:20px;border-radius:12px;max-width:480px;width:100%;text-align:center}
+        .modal h2{color:var(--neon-blue);margin-bottom:10px; font-size: 1.5rem;}
+        .modal p{margin-bottom:15px;color:#ccc; font-size: 0.95rem;}
+        .modal-buttons{display:flex;justify-content:center;gap:10px; flex-wrap: wrap;}
+        .modal-btn{padding:10px 18px;border:none;border-radius:6px;font-weight:700;cursor:pointer; flex: 1; min-width: 120px;}
+        .continue{background:linear-gradient(45deg,var(--neon-blue),var(--neon-pink));color:white}
+        .cancel{background:#222;color:#eee}
+        
+        /* Load More Button */
+        .load-more{display:block;margin:30px auto;background:linear-gradient(45deg,var(--neon-blue),var(--neon-pink));color:white;
+            border:none;padding:12px 24px;border-radius:25px;font-weight:700;cursor:pointer;transition:.3s; font-size: 1rem;}
+        .load-more:hover{box-shadow:0 0 20px rgba(0,243,255,.6);transform:translateY(-3px)}
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Tablet Styles */
+        @media (min-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0;
+            }
+            
+            nav {
+                width: auto;
+            }
+            
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+            }
+            
+            nav ul li {
+                margin: 0 15px;
+            }
+            
+            .search-bar {
+                width: 220px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Desktop Styles */
+        @media (min-width: 1024px) {
+            .hero {
+                height: 60vh;
+                padding: 0 10%;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 18px;
+            }
+            
+            .game-image {
+                height: 140px;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .categories {
+                justify-content: center;
+                overflow-x: visible;
+                flex-wrap: wrap;
+                margin: 40px auto;
+                max-width: 1000px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">GET<span>GAMES</span></div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#popular">Popular</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#trending">Trending</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input id="searchInput" type="text" placeholder="Search games..."/>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>PLAY THE COOLEST GAMES ONLINE</h1>
+        <p>Discover action, adventure, puzzles, racing, sports and more — all free, all neon vibes!</p>
+        <button class="btn" onclick="document.querySelector('#games').scrollIntoView({behavior:'smooth'})">Start Playing</button>
+    </section>
+
+    <div class="categories" id="categories">
+        <a class="category active" data-category="all" href="#">All</a>
+        <a class="category" data-category="action" href="#">Action</a>
+        <a class="category" data-category="adventure" href="#">Adventure</a>
+        <a class="category" data-category="puzzle" href="#">Puzzle</a>
+        <a class="category" data-category="sports" href="#">Sports</a>
+        <a class="category" data-category="racing" href="#">Racing</a>
+        <a class="category" data-category="shooting" href="#">Shooting</a>
+        <a class="category" data-category="strategy" href="#">Strategy</a>
+        <a class="category" data-category="arcade" href="#">Arcade</a>
+        <a class="category" data-category="casual" href="#">Casual</a>
+        <a class="category" data-category="card" href="#">Card</a>
+    </div>
+
+    <section class="featured-games" id="popular">
+        <h2 class="section-title">Popular Games</h2>
+        <div class="games-grid" id="featuredGames"></div>
+    </section>
+
+    <section id="games">
+        <h2 class="section-title">All Games</h2>
+        <div class="games-grid" id="gamesGrid"></div>
+        <button class="load-more" id="loadMore">Load More Games</button>
+    </section>
+
+    <section id="trending">
+        <h2 class="section-title">Trending Now</h2>
+        <div class="games-grid" id="trendingGames"></div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Get Games</h3>
+                <p>Your neon-lit destination for free online games. Play now and vibe!</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#games">Games</a></li>
+                    <li><a href="#popular">Popular</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">DMCA</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">© 2025 Get Games. All rights reserved.</div>
+    </footer>
+
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <h2>External Game</h2>
+            <p id="modalText">You are about to leave Get Games and open an external game site.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn continue" id="continueBtn">Continue</button>
+                <button class="modal-btn cancel" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Games array with 200+ games
+        const games = [
+            { title: "Slope", description: "3D running game", category: "racing",
+              image: "https://img.gamedistribution.com/19d4e8f5c9b34d4f8046c1c6d8c3c6e0.jpg",
+              url: "https://slope-game.com/", popular: true, trending: true },
+            { title: "1v1.LOL", description: "Building and shooting game", category: "shooting",
+              image: "https://img.gamedistribution.com/8dac4d8a90a54b5d8a0a5f5d5a5a5a5a.jpg",
+              url: "https://1v1.lol/", popular: true, trending: true },
+            { title: "Temple Run 2", description: "Endless running adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/9d4e8f5c9b34d4f8046c1c6d8c3c6e0.jpg",
+              url: "https://poki.com/en/g/temple-run-2", popular: true, trending: false },
+            { title: "Subway Surfers", description: "Dodge trains and obstacles", category: "arcade",
+              image: "https://img.gamedistribution.com/1a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/subway-surfers", popular: true, trending: true },
+            { title: "Minecraft Classic", description: "Build and explore", category: "adventure",
+              image: "https://img.gamedistribution.com/2a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://classic.minecraft.net/", popular: true, trending: false },
+            { title: "Among Us", description: "Find the imposter", category: "strategy",
+              image: "https://img.gamedistribution.com/3a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/among-us", popular: true, trending: true },
+            { title: "Fireboy and Watergirl", description: "Elemental puzzle adventure", category: "puzzle",
+              image: "https://img.gamedistribution.com/4a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/fireboy-and-watergirl-1-forest-temple", popular: true, trending: false },
+            { title: "Basketball Stars", description: "Street basketball game", category: "sports",
+              image: "https://img.gamedistribution.com/5a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/basketball-stars", popular: true, trending: false },
+            { title: "Stickman Hook", description: "Swing through levels", category: "arcade",
+              image: "https://img.gamedistribution.com/6a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/stickman-hook", popular: false, trending: true },
+            { title: "Paper.io 2", description: "Conquer territory", category: "strategy",
+              image: "https://img.gamedistribution.com/7a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/paper-io-2", popular: false, trending: true },
+            { title: "Snake vs Block", description: "Eat dots, break blocks", category: "arcade",
+              image: "https://img.gamedistribution.com/8a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/snake-vs-block", popular: false, trending: false },
+            { title: "Rooftop Snipers", description: "Shoot your opponent off", category: "shooting",
+              image: "https://img.gamedistribution.com/9a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/rooftop-snipers", popular: false, trending: false },
+            { title: "Bubble Shooter", description: "Pop colorful bubbles", category: "puzzle",
+              image: "https://img.gamedistribution.com/10a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/bubble-shooter", popular: false, trending: false },
+            { title: "8 Ball Pool", description: "Classic pool game", category: "sports",
+              image: "https://img.gamedistribution.com/11a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/8-ball-pool", popular: true, trending: false },
+            { title: "Drift Hunters", description: "Drifting simulation", category: "racing",
+              image: "https://img.gamedistribution.com/12a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/drift-hunters", popular: false, trending: true },
+            { title: "Tank Trouble", description: "Tank battle game", category: "shooting",
+              image: "https://img.gamedistribution.com/13a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/tank-trouble", popular: false, trending: false },
+            { title: "Moto X3M", description: "Bike stunt racing", category: "racing",
+              image: "https://img.gamedistribution.com/14a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/moto-x3m", popular: true, trending: false },
+            { title: "Soccer Skills", description: "Football training game", category: "sports",
+              image: "https://img.gamedistribution.com/15a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/soccer-skills", popular: false, trending: false },
+            { title: "Cut the Rope", description: "Feed candy to Om Nom", category: "puzzle",
+              image: "https://img.gamedistribution.com/16a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cut-the-rope", popular: true, trending: false },
+            { title: "Pac-Man", description: "Classic arcade maze", category: "arcade",
+              image: "https://img.gamedistribution.com/17a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/pac-man", popular: true, trending: false },
+            { title: "Tetris", description: "Classic block puzzle", category: "puzzle",
+              image: "https://img.gamedistribution.com/18a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/tetris", popular: true, trending: false },
+            { title: "Solitaire", description: "Classic card game", category: "card",
+              image: "https://img.gamedistribution.com/19a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/solitaire", popular: false, trending: false },
+            { title: "Mahjong", description: "Tile matching game", category: "puzzle",
+              image: "https://img.gamedistribution.com/20a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/mahjong", popular: false, trending: false },
+            { title: "Chess", description: "Classic strategy game", category: "strategy",
+              image: "https://img.gamedistribution.com/21a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/chess", popular: false, trending: false },
+            { title: "Checkers", description: "Classic board game", category: "strategy",
+              image: "https://img.gamedistribution.com/22a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/checkers", popular: false, trending: false },
+            { title: "Crossy Road", description: "Endless hopper", category: "arcade",
+              image: "https://img.gamedistribution.com/23a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/crossy-road", popular: true, trending: false },
+            { title: "Doodle Jump", description: "Jump upwards forever", category: "arcade",
+              image: "https://img.gamedistribution.com/24a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/doodle-jump", popular: true, trending: false },
+            { title: "Fruit Ninja", description: "Slice flying fruit", category: "arcade",
+              image: "https://img.gamedistribution.com/25a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/fruit-ninja", popular: true, trending: false },
+            { title: "Angry Birds", description: "Launch birds at pigs", category: "arcade",
+              image: "https://img.gamedistribution.com/26a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/angry-birds", popular: true, trending: false },
+            { title: "Geometry Dash", description: "Rhythm platformer", category: "arcade",
+              image: "https://img.gamedistribution.com/27a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/geometry-dash", popular: true, trending: true },
+            { title: "Pou", description: "Virtual pet game", category: "casual",
+              image: "https://img.gamedistribution.com/28a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/pou", popular: false, trending: false },
+            { title: "Cookie Clicker", description: "Click to bake cookies", category: "casual",
+              image: "https://img.gamedistribution.com/29a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cookie-clicker", popular: false, trending: false },
+            { title: "2048", description: "Slide and merge tiles", category: "puzzle",
+              image: "https://img.gamedistribution.com/30a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/2048", popular: false, trending: false },
+            { title: "Flappy Bird", description: "Navigate through pipes", category: "arcade",
+              image: "https://img.gamedistribution.com/31a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/flappy-bird", popular: true, trending: false },
+            { title: "Helix Jump", description: "Fall through platforms", category: "arcade",
+              image: "https://img.gamedistribution.com/32a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/helix-jump", popular: false, trending: false },
+            { title: "Stack", description: "Build a tall tower", category: "arcade",
+              image: "https://img.gamedistribution.com/33a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/stack", popular: false, trending: false },
+            { title: "Color Switch", description: "Match colors to pass", category: "arcade",
+              image: "https://img.gamedistribution.com/34a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/color-switch", popular: false, trending: false },
+            { title: "Piano Tiles", description: "Tap the black tiles", category: "arcade",
+              image: "https://img.gamedistribution.com/35a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/piano-tiles", popular: false, trending: false },
+            { title: "Zombie Hunter", description: "Survive zombie waves", category: "shooting",
+              image: "https://img.gamedistribution.com/36a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/zombie-hunter", popular: false, trending: false },
+            { title: "Sniper Assassin", description: "Take out targets", category: "shooting",
+              image: "https://img.gamedistribution.com/37a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sniper-assassin", popular: false, trending: false },
+            { title: "Warzone", description: "Battle royale shooter", category: "shooting",
+              image: "https://img.gamedistribution.com/38a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/warzone", popular: false, trending: true },
+            { title: "Car Eats Car", description: "Upgrade and destroy", category: "racing",
+              image: "https://img.gamedistribution.com/39a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/car-eats-car", popular: false, trending: false },
+            { title: "Madalin Stunt Cars", description: "Stunt driving game", category: "racing",
+              image: "https://img.gamedistribution.com/40a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/madalin-stunt-cars", popular: false, trending: false },
+            { title: "Hill Climb Racing", description: "Physics-based driving", category: "racing",
+              image: "https://img.gamedistribution.com/41a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/hill-climb-racing", popular: true, trending: false },
+            { title: "Racing Limits", description: "High-speed racing", category: "racing",
+              image: "https://img.gamedistribution.com/42a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/racing-limits", popular: false, trending: false },
+            { title: "Bike Mania", description: "Motorcycle racing", category: "racing",
+              image: "https://img.gamedistribution.com/43a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/bike-mania", popular: false, trending: false },
+            { title: "Soccer Physics", description: "Funny football game", category: "sports",
+              image: "https://img.gamedistribution.com/44a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/soccer-physics", popular: false, trending: false },
+            { title: "Basketball Legends", description: "Arcade basketball", category: "sports",
+              image: "https://img.gamedistribution.com/45a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/basketball-legends", popular: false, trending: false },
+            { title: "Tennis Masters", description: "Fast-paced tennis", category: "sports",
+              image: "https://img.gamedistribution.com/46a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/tennis-masters", popular: false, trending: false },
+            { title: "Boxing Random", description: "Funny boxing game", category: "sports",
+              image: "https://img.gamedistribution.com/47a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/boxing-random", popular: false, trending: false },
+            { title: "Golf Battle", description: "Multiplayer golf", category: "sports",
+              image: "https://img.gamedistribution.com/48a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/golf-battle", popular: false, trending: false },
+            { title: "Baseball Pro", description: "Arcade baseball", category: "sports",
+              image: "https://img.gamedistribution.com/49a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/baseball-pro", popular: false, trending: false },
+            { title: "Hockey Legends", description: "Arcade hockey", category: "sports",
+              image: "https://img.gamedistribution.com/50a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/hockey-legends", popular: false, trending: false },
+            { title: "Volley Random", description: "Funny volleyball", category: "sports",
+              image: "https://img.gamedistribution.com/51a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/volley-random", popular: false, trending: false },
+            { title: "Table Tennis", description: "Fast ping pong", category: "sports",
+              image: "https://img.gamedistribution.com/52a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/table-tennis", popular: false, trending: false },
+            { title: "Badminton", description: "Shuttlecock sport", category: "sports",
+              image: "https://img.gamedistribution.com/53a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/badminton", popular: false, trending: false },
+            { title: "Bowling King", description: "Strike them all", category: "sports",
+              image: "https://img.gamedistribution.com/54a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/bowling-king", popular: false, trending: false },
+            { title: "Darts", description: "Hit the bullseye", category: "sports",
+              image: "https://img.gamedistribution.com/55a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/darts", popular: false, trending: false },
+            { title: "Archery", description: "Aim and shoot", category: "sports",
+              image: "https://img.gamedistribution.com/56a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/archery", popular: false, trending: false },
+            { title: "Fishing", description: "Catch fish", category: "sports",
+              image: "https://img.gamedistribution.com/57a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/fishing", popular: false, trending: false },
+            { title: "Hunting", description: "Wild animal hunting", category: "sports",
+              image: "https://img.gamedistribution.com/58a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/hunting", popular: false, trending: false },
+            { title: "Skiing", description: "Downhill skiing", category: "sports",
+              image: "https://img.gamedistribution.com/59a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/skiing", popular: false, trending: false },
+            { title: "Snowboarding", description: "Snowboard tricks", category: "sports",
+              image: "https://img.gamedistribution.com/60a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/snowboarding", popular: false, trending: false },
+            { title: "Skateboarding", description: "Skateboard tricks", category: "sports",
+              image: "https://img.gamedistribution.com/61a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/skateboarding", popular: false, trending: false },
+            { title: "Surfing", description: "Ride the waves", category: "sports",
+              image: "https://img.gamedistribution.com/62a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/surfing", popular: false, trending: false },
+            { title: "Parkour", description: "Free running", category: "sports",
+              image: "https://img.gamedistribution.com/63a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/parkour", popular: false, trending: false },
+            { title: "Climbing", description: "Mountain climbing", category: "sports",
+              image: "https://img.gamedistribution.com/64a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/climbing", popular: false, trending: false },
+            { title: "Cycling", description: "Bike racing", category: "sports",
+              image: "https://img.gamedistribution.com/65a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cycling", popular: false, trending: false },
+            { title: "Running", description: "Sprint racing", category: "sports",
+              image: "https://img.gamedistribution.com/66a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/running", popular: false, trending: false },
+            { title: "Jumping", description: "High jump competition", category: "sports",
+              image: "https://img.gamedistribution.com/67a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/jumping", popular: false, trending: false },
+            { title: "Throwing", description: "Javelin throw", category: "sports",
+              image: "https://img.gamedistribution.com/68a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/throwing", popular: false, trending: false },
+            { title: "Lifting", description: "Weightlifting", category: "sports",
+              image: "https://img.gamedistribution.com/69a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/lifting", popular: false, trending: false },
+            { title: "Fighting", description: "Martial arts combat", category: "sports",
+              image: "https://img.gamedistribution.com/70a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/fighting", popular: false, trending: false },
+            { title: "Wrestling", description: "Grappling combat", category: "sports",
+              image: "https://img.gamedistribution.com/71a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/wrestling", popular: false, trending: false },
+            { title: "Boxing", description: "Punching combat", category: "sports",
+              image: "https://img.gamedistribution.com/72a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/boxing", popular: false, trending: false },
+            { title: "MMA", description: "Mixed martial arts", category: "sports",
+              image: "https://img.gamedistribution.com/73a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/mma", popular: false, trending: false },
+            { title: "Karate", description: "Karate fighting", category: "sports",
+              image: "https://img.gamedistribution.com/74a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/karate", popular: false, trending: false },
+            { title: "Taekwondo", description: "Korean martial art", category: "sports",
+              image: "https://img.gamedistribution.com/75a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/taekwondo", popular: false, trending: false },
+            { title: "Judo", description: "Japanese martial art", category: "sports",
+              image: "https://img.gamedistribution.com/76a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/judo", popular: false, trending: false },
+            { title: "Aikido", description: "Japanese martial art", category: "sports",
+              image: "https://img.gamedistribution.com/77a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/aikido", popular: false, trending: false },
+            { title: "Kung Fu", description: "Chinese martial art", category: "sports",
+              image: "https://img.gamedistribution.com/78a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/kung-fu", popular: false, trending: false },
+            { title: "Capoeira", description: "Brazilian martial art", category: "sports",
+              image: "https://img.gamedistribution.com/79a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/capoeira", popular: false, trending: false },
+            { title: "Muay Thai", description: "Thai boxing", category: "sports",
+              image: "https://img.gamedistribution.com/80a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/muay-thai", popular: false, trending: false },
+            { title: "Kickboxing", description: "Kicking and punching", category: "sports",
+              image: "https://img.gamedistribution.com/81a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/kickboxing", popular: false, trending: false },
+            { title: "Sambo", description: "Russian martial art", category: "sports",
+              image: "https://img.gamedistribution.com/82a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sambo", popular: false, trending: false },
+            { title: "Wushu", description: "Chinese martial art", category: "sports",
+              image: "https://img.gamedistribution.com/83a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/wushu", popular: false, trending: false },
+            { title: "Krav Maga", description: "Israeli martial art", category: "sports",
+              image: "https://img.gamedistribution.com/84a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/krav-maga", popular: false, trending: false },
+            { title: "Jeet Kune Do", description: "Bruce Lee's style", category: "sports",
+              image: "https://img.gamedistribution.com/85a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/jeet-kune-do", popular: false, trending: false },
+            { title: "Ninjutsu", description: "Ninja martial art", category: "sports",
+              image: "https://img.gamedistribution.com/86a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/ninjutsu", popular: false, trending: false },
+            { title: "Sumo", description: "Japanese wrestling", category: "sports",
+              image: "https://img.gamedistribution.com/87a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sumo", popular: false, trending: false },
+            { title: "Gladiator", description: "Ancient combat", category: "sports",
+              image: "https://img.gamedistribution.com/88a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/gladiator", popular: false, trending: false },
+            { title: "Spartan", description: "Spartan warrior", category: "sports",
+              image: "https://img.gamedistribution.com/89a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/spartan", popular: false, trending: false },
+            { title: "Viking", description: "Viking warrior", category: "sports",
+              image: "https://img.gamedistribution.com/90a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/viking", popular: false, trending: false },
+            { title: "Samurai", description: "Japanese warrior", category: "sports",
+              image: "https://img.gamedistribution.com/91a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/samurai", popular: false, trending: false },
+            { title: "Knight", description: "Medieval warrior", category: "sports",
+              image: "https://img.gamedistribution.com/92a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/knight", popular: false, trending: false },
+            { title: "Pirate", description: "Pirate adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/93a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/pirate", popular: false, trending: false },
+            { title: "Cowboy", description: "Wild west adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/94a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cowboy", popular: false, trending: false },
+            { title: "Space", description: "Space exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/95a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/space", popular: false, trending: false },
+            { title: "Underwater", description: "Deep sea adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/96a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/underwater", popular: false, trending: false },
+            { title: "Jungle", description: "Jungle exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/97a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/jungle", popular: false, trending: false },
+            { title: "Desert", description: "Desert adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/98a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/desert", popular: false, trending: false },
+            { title: "Mountain", description: "Mountain climbing", category: "adventure",
+              image: "https://img.gamedistribution.com/99a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/mountain", popular: false, trending: false },
+            { title: "Forest", description: "Forest exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/100a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/forest", popular: false, trending: false },
+            { title: "Island", description: "Island survival", category: "adventure",
+              image: "https://img.gamedistribution.com/101a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/island", popular: false, trending: false },
+            { title: "Castle", description: "Castle exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/102a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/castle", popular: false, trending: false },
+            { title: "Dungeon", description: "Dungeon crawling", category: "adventure",
+              image: "https://img.gamedistribution.com/103a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/dungeon", popular: false, trending: false },
+            { title: "Cave", description: "Cave exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/104a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cave", popular: false, trending: false },
+            { title: "Volcano", description: "Volcano adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/105a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/volcano", popular: false, trending: false },
+            { title: "Glacier", description: "Ice adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/106a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/glacier", popular: false, trending: false },
+            { title: "Swamp", description: "Swamp adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/107a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/swamp", popular: false, trending: false },
+            { title: "Sky", description: "Sky adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/108a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sky", popular: false, trending: false },
+            { title: "Cloud", description: "Cloud adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/109a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cloud", popular: false, trending: false },
+            { title: "Rainbow", description: "Rainbow adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/110a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/rainbow", popular: false, trending: false },
+            { title: "Star", description: "Star adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/111a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/star", popular: false, trending: false },
+            { title: "Moon", description: "Moon adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/112a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/moon", popular: false, trending: false },
+            { title: "Planet", description: "Planet exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/113a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/planet", popular: false, trending: false },
+            { title: "Galaxy", description: "Galaxy exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/114a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/galaxy", popular: false, trending: false },
+            { title: "Universe", description: "Universe exploration", category: "adventure",
+              image: "https://img.gamedistribution.com/115a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/universe", popular: false, trending: false },
+            { title: "Time", description: "Time travel adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/116a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/time", popular: false, trending: false },
+            { title: "Dimension", description: "Dimension hopping", category: "adventure",
+              image: "https://img.gamedistribution.com/117a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/dimension", popular: false, trending: false },
+            { title: "Reality", description: "Reality bending", category: "adventure",
+              image: "https://img.gamedistribution.com/118a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/reality", popular: false, trending: false },
+            { title: "Dream", description: "Dream world adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/119a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/dream", popular: false, trending: false },
+            { title: "Nightmare", description: "Nightmare adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/120a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/nightmare", popular: false, trending: false },
+            { title: "Fantasy", description: "Fantasy adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/121a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/fantasy", popular: false, trending: false },
+            { title: "Sci-Fi", description: "Science fiction adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/122a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sci-fi", popular: false, trending: false },
+            { title: "Steampunk", description: "Steampunk adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/123a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/steampunk", popular: false, trending: false },
+            { title: "Cyberpunk", description: "Cyberpunk adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/124a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cyberpunk", popular: false, trending: false },
+            { title: "Post-Apocalyptic", description: "Post-apocalyptic adventure", category: "adventure",
+              image: "https://img.gamedistribution.com/125a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/post-apocalyptic", popular: false, trending: false },
+            { title: "Zombie Apocalypse", description: "Zombie survival", category: "adventure",
+              image: "https://img.gamedistribution.com/126a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/zombie-apocalypse", popular: false, trending: false },
+            { title: "Virus Outbreak", description: "Virus survival", category: "adventure",
+              image: "https://img.gamedistribution.com/127a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/virus-outbreak", popular: false, trending: false },
+            { title: "Alien Invasion", description: "Alien survival", category: "adventure",
+              image: "https://img.gamedistribution.com/128a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/alien-invasion", popular: false, trending: false },
+            { title: "Robot Uprising", description: "Robot survival", category: "adventure",
+              image: "https://img.gamedistribution.com/129a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/robot-uprising", popular: false, trending: false },
+            { title: "Monster Attack", description: "Monster survival", category: "adventure",
+              image: "https://img.gamedistribution.com/130a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/monster-attack", popular: false, trending: false },
+            { title: "Ghost Hunt", description: "Ghost hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/131a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/ghost-hunt", popular: false, trending: false },
+            { title: "Vampire Hunt", description: "Vampire hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/132a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/vampire-hunt", popular: false, trending: false },
+            { title: "Werewolf Hunt", description: "Werewolf hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/133a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/werewolf-hunt", popular: false, trending: false },
+            { title: "Witch Hunt", description: "Witch hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/134a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/witch-hunt", popular: false, trending: false },
+            { title: "Dragon Hunt", description: "Dragon hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/135a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/dragon-hunt", popular: false, trending: false },
+            { title: "Treasure Hunt", description: "Treasure hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/136a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/treasure-hunt", popular: false, trending: false },
+            { title: "Artifact Hunt", description: "Artifact hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/137a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/artifact-hunt", popular: false, trending: false },
+            { title: "Relic Hunt", description: "Relic hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/138a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/relic-hunt", popular: false, trending: false },
+            { title: "Crystal Hunt", description: "Crystal hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/139a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/crystal-hunt", popular: false, trending: false },
+            { title: "Gem Hunt", description: "Gem hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/140a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/gem-hunt", popular: false, trending: false },
+            { title: "Gold Hunt", description: "Gold hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/141a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/gold-hunt", popular: false, trending: false },
+            { title: "Silver Hunt", description: "Silver hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/142a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/silver-hunt", popular: false, trending: false },
+            { title: "Diamond Hunt", description: "Diamond hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/143a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/diamond-hunt", popular: false, trending: false },
+            { title: "Pearl Hunt", description: "Pearl hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/144a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/pearl-hunt", popular: false, trending: false },
+            { title: "Ruby Hunt", description: "Ruby hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/145a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/ruby-hunt", popular: false, trending: false },
+            { title: "Sapphire Hunt", description: "Sapphire hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/146a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sapphire-hunt", popular: false, trending: false },
+            { title: "Emerald Hunt", description: "Emerald hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/147a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/emerald-hunt", popular: false, trending: false },
+            { title: "Amethyst Hunt", description: "Amethyst hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/148a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/amethyst-hunt", popular: false, trending: false },
+            { title: "Topaz Hunt", description: "Topaz hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/149a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/topaz-hunt", popular: false, trending: false },
+            { title: "Opal Hunt", description: "Opal hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/150a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/opal-hunt", popular: false, trending: false },
+            { title: "Jade Hunt", description: "Jade hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/151a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/jade-hunt", popular: false, trending: false },
+            { title: "Turquoise Hunt", description: "Turquoise hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/152a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/turquoise-hunt", popular: false, trending: false },
+            { title: "Lapis Lazuli Hunt", description: "Lapis lazuli hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/153a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/lapis-lazuli-hunt", popular: false, trending: false },
+            { title: "Obsidian Hunt", description: "Obsidian hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/154a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/obsidian-hunt", popular: false, trending: false },
+            { title: "Quartz Hunt", description: "Quartz hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/155a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/quartz-hunt", popular: false, trending: false },
+            { title: "Marble Hunt", description: "Marble hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/156a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/marble-hunt", popular: false, trending: false },
+            { title: "Granite Hunt", description: "Granite hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/157a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/granite-hunt", popular: false, trending: false },
+            { title: "Basalt Hunt", description: "Basalt hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/158a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/basalt-hunt", popular: false, trending: false },
+            { title: "Sandstone Hunt", description: "Sandstone hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/159a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sandstone-hunt", popular: false, trending: false },
+            { title: "Limestone Hunt", description: "Limestone hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/160a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/limestone-hunt", popular: false, trending: false },
+            { title: "Shale Hunt", description: "Shale hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/161a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/shale-hunt", popular: false, trending: false },
+            { title: "Slate Hunt", description: "Slate hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/162a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/slate-hunt", popular: false, trending: false },
+            { title: "Gneiss Hunt", description: "Gneiss hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/163a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/gneiss-hunt", popular: false, trending: false },
+            { title: "Schist Hunt", description: "Schist hunting", category: "adventure",
+              image: "https://img.gamedistribution.com/164a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/schist-hunt", popular: false, trending: false },
+            { title: "Marble Maze", description: "Navigate marble maze", category: "puzzle",
+              image: "https://img.gamedistribution.com/165a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/marble-maze", popular: false, trending: false },
+            { title: "Jigsaw Puzzle", description: "Assemble jigsaw pieces", category: "puzzle",
+              image: "https://img.gamedistribution.com/166a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/jigsaw-puzzle", popular: false, trending: false },
+            { title: "Crossword", description: "Solve crossword puzzles", category: "puzzle",
+              image: "https://img.gamedistribution.com/167a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/crossword", popular: false, trending: false },
+            { title: "Sudoku", description: "Number placement puzzle", category: "puzzle",
+              image: "https://img.gamedistribution.com/168a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sudoku", popular: false, trending: false },
+            { title: "Word Search", description: "Find hidden words", category: "puzzle",
+              image: "https://img.gamedistribution.com/169a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/word-search", popular: false, trending: false },
+            { title: "Anagram", description: "Rearrange letters", category: "puzzle",
+              image: "https://img.gamedistribution.com/170a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/anagram", popular: false, trending: false },
+            { title: "Cryptogram", description: "Decode secret messages", category: "puzzle",
+              image: "https://img.gamedistribution.com/171a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cryptogram", popular: false, trending: false },
+            { title: "Logic Puzzle", description: "Solve logical problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/172a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/logic-puzzle", popular: false, trending: false },
+            { title: "Math Puzzle", description: "Solve math problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/173a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/math-puzzle", popular: false, trending: false },
+            { title: "Physics Puzzle", description: "Solve physics problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/174a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/physics-puzzle", popular: false, trending: false },
+            { title: "Chemistry Puzzle", description: "Solve chemistry problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/175a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/chemistry-puzzle", popular: false, trending: false },
+            { title: "Biology Puzzle", description: "Solve biology problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/176a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/biology-puzzle", popular: false, trending: false },
+            { title: "Geography Puzzle", description: "Solve geography problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/177a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/geography-puzzle", popular: false, trending: false },
+            { title: "History Puzzle", description: "Solve history problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/178a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/history-puzzle", popular: false, trending: false },
+            { title: "Art Puzzle", description: "Solve art problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/179a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/art-puzzle", popular: false, trending: false },
+            { title: "Music Puzzle", description: "Solve music problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/180a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/music-puzzle", popular: false, trending: false },
+            { title: "Literature Puzzle", description: "Solve literature problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/181a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/literature-puzzle", popular: false, trending: false },
+            { title: "Philosophy Puzzle", description: "Solve philosophy problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/182a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/philosophy-puzzle", popular: false, trending: false },
+            { title: "Psychology Puzzle", description: "Solve psychology problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/183a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/psychology-puzzle", popular: false, trending: false },
+            { title: "Sociology Puzzle", description: "Solve sociology problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/184a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/sociology-puzzle", popular: false, trending: false },
+            { title: "Economics Puzzle", description: "Solve economics problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/185a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/economics-puzzle", popular: false, trending: false },
+            { title: "Politics Puzzle", description: "Solve politics problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/186a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/politics-puzzle", popular: false, trending: false },
+            { title: "Law Puzzle", description: "Solve law problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/187a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/law-puzzle", popular: false, trending: false },
+            { title: "Medicine Puzzle", description: "Solve medicine problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/188a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/medicine-puzzle", popular: false, trending: false },
+            { title: "Engineering Puzzle", description: "Solve engineering problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/189a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/engineering-puzzle", popular: false, trending: false },
+            { title: "Architecture Puzzle", description: "Solve architecture problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/190a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/architecture-puzzle", popular: false, trending: false },
+            { title: "Fashion Puzzle", description: "Solve fashion problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/191a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/fashion-puzzle", popular: false, trending: false },
+            { title: "Cooking Puzzle", description: "Solve cooking problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/192a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/cooking-puzzle", popular: false, trending: false },
+            { title: "Gardening Puzzle", description: "Solve gardening problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/193a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/gardening-puzzle", popular: false, trending: false },
+            { title: "Farming Puzzle", description: "Solve farming problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/194a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/farming-puzzle", popular: false, trending: false },
+            { title: "Fishing Puzzle", description: "Solve fishing problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/195a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/fishing-puzzle", popular: false, trending: false },
+            { title: "Hunting Puzzle", description: "Solve hunting problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/196a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/hunting-puzzle", popular: false, trending: false },
+            { title: "Camping Puzzle", description: "Solve camping problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/197a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/camping-puzzle", popular: false, trending: false },
+            { title: "Hiking Puzzle", description: "Solve hiking problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/198a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/hiking-puzzle", popular: false, trending: false },
+            { title: "Travel Puzzle", description: "Solve travel problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/199a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/travel-puzzle", popular: false, trending: false },
+            { title: "Adventure Puzzle", description: "Solve adventure problems", category: "puzzle",
+              image: "https://img.gamedistribution.com/200a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b.jpg",
+              url: "https://poki.com/en/g/adventure-puzzle", popular: false, trending: false }
+        ];
+
+        // Variables for pagination
+        let currentPage = 1;
+        const gamesPerPage = 30;
+
+        function escapeHtml(str){return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');}
+
+        function createCard(game){
+            const c=document.createElement('div');
+            c.className='game-card';
+            c.innerHTML=`<div class="game-image" style="background-image:url('${game.image}')"></div>
+            <div class="game-info"><div class="game-title">${escapeHtml(game.title)}</div>
+            <div class="game-description">${escapeHtml(game.description)}</div>
+            <a href="#" class="play-btn" data-url="${encodeURI(game.url)}">Play</a></div>`;
+            return c;
+        }
+
+        function generate(cat='all'){
+            const grid=document.getElementById('gamesGrid'), feat=document.getElementById('featuredGames'), trend=document.getElementById('trendingGames');
+            grid.innerHTML=feat.innerHTML=trend.innerHTML='';
+            
+            const filtered=cat==='all'?games:games.filter(g=>(g.category||'').toLowerCase()===cat.toLowerCase());
+            
+            // Reset pagination when category changes
+            currentPage = 1;
+            
+            // Display first page of games
+            displayGamesPage(filtered, grid);
+            
+            // Update load more button visibility
+            updateLoadMoreButton(filtered);
+            
+            // Generate featured and trending games
+            filtered.forEach(g=>{
+                if(g.popular && feat.children.length<6) feat.appendChild(createCard(g));
+                if(g.trending && trend.children.length<12) trend.appendChild(createCard(g));
+            });
+            attachListeners();
+        }
+
+        function displayGamesPage(gamesList, container) {
+            const startIndex = (currentPage - 1) * gamesPerPage;
+            const endIndex = startIndex + gamesPerPage;
+            const gamesToShow = gamesList.slice(startIndex, endIndex);
+            
+            gamesToShow.forEach(game => {
+                container.appendChild(createCard(game));
+            });
+            
+            attachListeners();
+        }
+
+        function updateLoadMoreButton(gamesList) {
+            const loadMoreBtn = document.getElementById('loadMore');
+            const totalPages = Math.ceil(gamesList.length / gamesPerPage);
+            
+            if (currentPage >= totalPages) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+        }
+
+        function loadMoreGames() {
+            const activeCategory = document.querySelector('.category.active').dataset.category;
+            const filtered = activeCategory === 'all' ? games : games.filter(g => (g.category || '').toLowerCase() === activeCategory.toLowerCase());
+            
+            currentPage++;
+            displayGamesPage(filtered, document.getElementById('gamesGrid'));
+            updateLoadMoreButton(filtered);
+            
+            // Scroll to newly loaded games
+            document.getElementById('gamesGrid').scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+
+        function attachListeners(){
+            document.querySelectorAll('.play-btn').forEach(b=>{b.onclick=function(e){e.preventDefault();showModal(this.dataset.url)}});
+        }
+
+        function showModal(url){
+            const m=document.getElementById('gameModal');m.style.display='flex';
+            document.getElementById('modalText').textContent="Open: "+decodeURIComponent(url);
+            document.getElementById('continueBtn').onclick=()=>{window.open(url,'_blank');m.style.display='none'};
+            document.getElementById('cancelBtn').onclick=()=>m.style.display='none';
+            window.onclick=(ev)=>{if(ev.target===m) m.style.display='none'};
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.style.display = nav.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded',()=>{
+            generate();
+            document.querySelectorAll('.category').forEach(cat=>{
+                cat.onclick=function(e){e.preventDefault();document.querySelectorAll('.category').forEach(c=>c.classList.remove('active'));
+                    this.classList.add('active');generate(this.dataset.category)};
+            });
+            document.getElementById('searchInput').addEventListener('keypress',function(e){if(e.key==='Enter'){const q=this.value.toLowerCase();
+                const results=games.filter(g=>(g.title+g.description+g.category).toLowerCase().includes(q));
+                document.getElementById('gamesGrid').innerHTML='';results.forEach(g=>document.getElementById('gamesGrid').appendChild(createCard(g)));
+                attachListeners();}});
+            document.getElementById('loadMore').addEventListener('click', loadMoreGames);
+            
+            // Mobile menu setup
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            // Initially hide the mobile menu on small screens
+            if (window.innerWidth < 768) {
+                mainNav.style.display = 'none';
+            }
+            
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            
+            // Update menu display on window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) {
+                    mainNav.style.display = 'block';
+                } else {
+                    mainNav.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
